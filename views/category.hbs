@@ -1,0 +1,25 @@
+<h3>{{ film.category }}</h3>
+<div>
+  {{#if film.winner }}
+  <div height="317px" width="214px">
+    <img src="/img/{{ film.image }}.jpg" alt="{{ film.winner }} Poster">
+  </div>
+  {{/if}}
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Nominee</th>
+      <th colspan="2">Predictions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each table }}
+    <tr>
+      <td class="{{#if this.winner }}winner{{/if}}">{{ this.name }}</td>
+      <td></td>
+      <td>{{ this.cnt }}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

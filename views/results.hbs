@@ -1,0 +1,26 @@
+<div>
+  <h3>Leaderboard</h3>
+  {{#if table.error }}
+  <p>Error in retrieving results :-(</p>
+  {{else}}
+  <table>
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Player</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each table.data }}
+      <tr>
+        <td></td>
+        <td>{{ player }}</td>
+        <td>{{ score }}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{/if}}
+  
+</div>
