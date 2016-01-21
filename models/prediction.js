@@ -77,12 +77,10 @@ exports.category = function(cat, done) {
 // gets the winner of a category
 exports.getwinner = function(cat, done) {
 
-  db.use().query('SELECT C.name AS category, N.id, N.name AS winner, N.film, N.image FROM categories C LEFT JOIN nominees N ON C.winner_id = N.id WHERE C.id = ?', cat, function(err, rows) {
+  db.use().query('SELECT C.name AS category, C.lastyear, N.id, N.name AS winner, N.film, N.image FROM categories C LEFT JOIN nominees N ON C.winner_id = N.id WHERE C.id = ?', cat, function(err, rows) {
     if (err) {
-      console.log('getwinner1', err);
       done(err);
     } else {
-      console.log('getwinner2', rows);
       done(rows);
     }
   })
