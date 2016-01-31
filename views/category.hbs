@@ -1,28 +1,37 @@
-<h3 data-cat="{{ film.cid }}">{{ film.category }}</h3>
-<div>
-  {{#if film.winner }}
-  <div style="max-height: 317px; max-width: 214px">
-    <img src="/img/{{ film.image }}.jpg" alt="{{ film.winner }} Poster">
+
+<div class="row">
+
+  <div class="small-12 medium-4 columns">
+    <h3 data-cat="{{ film.cid }}">{{ film.category }}</h3>
+    {{#if film.winner }}
+    <div style="max-height: 317px; max-width: 214px">
+      <img src="/img/{{ film.image }}.jpg" alt="{{ film.winner }} Poster">
+    </div>
+    {{/if }}
+    <p>Last Year's Winner: {{ film.lastyear }}</p>
   </div>
-  {{/if }}
-  <p>Last Year's Winner: {{ film.lastyear }}</p>
+
+  <div class="small-12 medium-8 columns">
+    <table id="category">
+      <thead>
+        <tr>
+          <th>Nominee</th>
+          <th colspan="2">Predictions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each table }}
+        <tr>
+          <td class="{{#if this.winner }}winner{{/if }}">{{ this.name }}</td>
+          <td width="500px"><div class="bar" data-win="{{ this.winner }}" data-len="{{ this.cnt }}" data-nid="{{ this.id }}"></div></td>
+          <td>{{ this.cnt }}</td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
-<table id="category">
-  <thead>
-    <tr>
-      <th>Nominee</th>
-      <th colspan="2">Predictions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each table }}
-    <tr>
-      <td class="{{#if this.winner }}winner{{/if }}">{{ this.name }}</td>
-      <td width="500px"><div style="width: 0; padding: 3px; height: 30px;" class="bar" data-win="{{ this.winner }}" data-len="{{ this.cnt }}" data-nid="{{ this.id }}"></div></td>
-      <td>{{ this.cnt }}</td>
-    </tr>
-    {{/each }}
-  </tbody>
-</table>
+
 

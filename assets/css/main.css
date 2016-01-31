@@ -21,6 +21,12 @@ section {
   float: right;
 }
 
+.bar {
+  width: 0; 
+  padding: 3px; 
+  height: 2em;
+}
+
 .category {
   margin: 0.7em;
   min-width: 172px; //214px; //13em;
