@@ -4,7 +4,7 @@ var credentials = require('./config/config');
 var state = { pool: null, mode: null };
 
 exports.conn = function(done) {
-  state.pool = mysql.createPool(credentials.local);
+  state.pool = mysql.createPool(credentials.conn);
   done();
 }
 
