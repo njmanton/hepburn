@@ -36,7 +36,7 @@ var quotes = [
     person: "Christopher Plummer"
   },
   {
-    quote: "Most of all, I want to thank my father, up there, the man who when I said I wanted to be an actor, he said, 'Wonderful. Just have a back-up profession like welding.'",
+    quote: "Most of all, I want to thank my father, up there, the man who when I said I wanted to be an actor, he said, 'Wonderful. Just have a back-up profession, like welding.'",
     person: "Robin Williams"
   },
   {

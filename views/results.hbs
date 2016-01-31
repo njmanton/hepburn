@@ -3,7 +3,7 @@
   {{#if table.error }}
   <p>Error in retrieving results :-(</p>
   {{else}}
-  <table>
+  <table id="results">
     <thead>
       <tr>
         <th>Position</th>
@@ -14,9 +14,11 @@
     <tbody>
       {{#each table.data }}
       <tr>
-        <td></td>
+        <td>{{ rank }}</td>
         <td>{{ player }}</td>
-        <td>{{ score }}</td>
+        <td width="500px">
+          <div style="background-color: width: 0; padding: 3px; height: 30px;" class="bar" data-len="{{ score }}">{{ score }}</div>
+        </td>
       </tr>
       {{/each}}
     </tbody>

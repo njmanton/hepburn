@@ -1,98 +1,40 @@
-<div>
-  <h2>The Main Page</h2>
-  <p>Intro text</p>
-
+<div class="row">
   {{#if error }}
-  <p class="flash err">Sorry, couldn't find that record. The error was: {{ error }}. Please check and try entering it again.</p>
+  <p class="callout alert">Sorry, couldn't find that record. The error was: {{ error }}. Please check and try entering it again.</p>
   {{/if}}
 
   {{#if signup.error }}
-  <p class="flash err">Something went wrong in registering your details. The error code was: {{ signup.error }}</p>
+  <p class="callout alert">Something went wrong in registering your details. The error code was: {{ signup.error }}</p>
   {{/if}}
 
   {{#if signup.code }}
-  <p class="flash success">Signup successful. Your code is <strong>{{ signup.code }}</strong>. Use this to make your predictions at <a href="/player/{{ signup.code }}">http://example.com/player/{{ signup.code }}</a>. You will also recieve a copy of the code by email.</p>
+  <p class="callout success">Signup successful. Your code is <strong>{{ signup.code }}</strong>. Use this to make your predictions at <a href="/player/{{ signup.code }}">http://oscars.mantonbradbury.com/player/{{ signup.code }}</a>. You will also receive a copy of the code by email.</p>
   {{/if}}
 
+  <h2>MY 20-YEAR OSCAR HELL PRESENTS&hellip;</h2>
+  <p>The third annual prediction game for the Academy Awards. Choose who you think will win in each of the 24 main categories, to be announced at the 88th Academy Awards, on February 28.</p>
+
+  <p>Each award category is worth 2-4 points, depending on its 'popularity' and number of nominees. The maximum score you can achieve is 70. The player with the best score wins&hellip;nothing really. No money, no statuette, just the satisfaction of knowing you were the best guesser.</p>
   {{#if expired}}
-  <p>The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
+  <p class="alert">The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
   {{else}}
+  <h3>Signup</h3>
   <div>
-    <p>Sign up to make your own predictions. Enter your chosen username and email*, both must be unique.</p>
+    <p>Enter a username and email to get started. The deadline for entering or changing predictions is <strong>midnight GMT on Feb 28</strong>.</p>
   </div>
   <form id="signup" method="post" action="/signup">
     <div class="signup-container">
-      <input placeholder="rubeus" id="username" name="username" type="textbox" autofocus="true" maxlength="50">
-      <span id="username-not-valid" class="intrainput"></span>
+      <label for="username">What's your name? <small>This is how you'll appear on the leaderboard</small>
+        <input placeholder="{{ signups.uid }}" id="username" name="username" type="textbox" autofocus="true" maxlength="50">
+        <span id="username-not-valid" class="intrainput"></span>
+      </label>
     </div>
     <div class="signup-container">
-      <input placeholder="rhagrid@hogwarts.ac.uk" id="email" name="email" type="email">
+      <label for="email">What's your email? <small>You'll only get two emails in total, confirmation of signup and the final rankings</small></label>
+      <input placeholder="{{ signups.email }}" id="email" name="email" type="email">
       <span id="email-not-valid" class="intrainput"></span>
     </div>
-    <input id="signup-submit" type="submit" value="Submit" />
+    <input id="signup-submit" type="submit" class="button" value="Sign up" />
   </form>
-  <div>
-    <p>* You'll get precisely two emails: one with your your unique code, and one with your final results.</p>
-  </div>
-  {{/if}}  
+  {{/if}}
 </div>
-
-<script>
-$(document).ready(function() {
-
-  $('#signup-submit').attr('disabled', 'disabled');
-  $('#signup #username').on('keyup', function() {
-    
-    var uname = $(this).val();
-    if (uname.length > 2) {
-      $('#signup-submit').removeAttr('disabled');
-      $.ajax({
-        type: 'POST',
-        url: '/player/check',
-        data: { type: 1, value: uname},
-        beforeSend: function() {
-          $('#username-not-valid').show().html('<img src="/img/ajax-loader.gif" alt="..." />');
-        }
-      }).done(function(res) {
-        if (res === true) { // name is ok
-          $('#signup-submit').removeAttr('disabled');
-          $('#username-not-valid').removeClass('err').show().html('&#10003;');
-        } else {
-          $('#signup-submit').attr('disabled', 'disabled');
-          $('#username-not-valid').addClass('err').show().text('taken');
-        }
-      });
-    } else {
-      $('#username-not-valid').hide();
-      $('#signup-submit').attr('disabled', 'disabled');
-    }
-      
-  })
-
-  $('#signup #email').on('blur', function() {
-    var email = $('#email').val(),
-        env = $('#email-not-valid'),
-        re = /\S+@\S+\.\S+/;
-
-    if (email.match(re)) {
-      $.ajax({
-        type: 'POST',
-        url: '/player/check',
-        data: { type: 2, value: email }
-      }).done(function(res) {
-        if (res === true) {
-          $('#signup-submit').removeAttr('disabled');
-          $('#email-not-valid').removeClass('err').show().html('&#10003;');
-        } else {
-          $('#signup-submit').attr('disabled', 'disabled');
-          $('#email-not-valid').addClass('err').show().text('taken');
-        }          
-      });
-    } else {
-      env.show().removeClass('success').addClass('err').html('!');
-      $('#signup-submit').attr('disabled', 'disabled');        
-    }
-  })
-
-})
-</script>

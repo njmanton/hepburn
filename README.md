@@ -7,4 +7,5 @@ Dependencies:
 - express-handlebars
 - body-parser
 - mysql
+- mailgun-js
 

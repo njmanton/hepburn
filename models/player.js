@@ -12,6 +12,8 @@ exports.exists = function(code, done) {
       var result = { err: null, id: null, name: null };
       if (err) {
         result.err = err.code;
+      } else if (!rows.length) {
+        result.err = 'Invalid code';
       } else {
         result.id = rows[0].id;
         result.name = rows[0].username;
@@ -57,7 +59,8 @@ exports.create = function(username, email, done) {
   var user = {
     username: username, 
     email: email, 
-    code: code 
+    code: code,
+    registered: new Date()
   };
   var sql = 'INSERT INTO users SET ?';
   db.use().query(sql, user, function(err, rows) {

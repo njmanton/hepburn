@@ -1,46 +1,48 @@
-<div>
-  <h3>Predictions</h3>
+<div class="row">
+  <h3>My Predictions</h3>
+  {{#if expired }}
+  <div class="alert callout">
+    <p>The deadline has now been reached. You can no longer edit your predictions. You can see the scores <a href="/results">here</a> as the award results come in.</p>
+  </div>
+  {{ else }}
+  <div>
+    <p>Click on a category to make or edit your prediction for that category. The number in the title bar shows the number of points each category is worth.</p>
+  </div>
+  {{/if }}
+  
   <div id="head" data-uid="{{ user.id }}">{{ user.name }}</div>
   
-  {{#each data }}
-  <section>
-    <h4>{{ this.category }} ({{ this.weight }} points)</h4>
-    <div data-cat="{{ this.id }}" id="pane">
-      {{#each this.noms }}
-        <div class="small-nom {{#if this.pred }}picked{{/if}}" data-nom="{{ this.id }}">
-          <img src="/img/{{ this.image }}.jpg" title="{{ this.name }} {{#if this.film }} ({{ this.film }}){{/if}}" alt="{{ this.name }}">
+  <section class="row titles">
+    {{#each data }}
+    <div class="category">
+      <a data-open="cat{{ this.id }}">
+        <div class="cat-head">
+          <span class="cat-name">{{ this.category }}</span>
+          <span title="{{ this.weight }} points" class="pts">{{ this.weight }}</span>
         </div>
-      {{/each}}
+        {{#if this.pred.image }}
+        <div class="poster">
+          <img class="pick-img" title="{{ this.pred.name }}{{#if this.pred.film }} &#10;({{ this.pred.film }}){{/if }}" src="/img/{{ this.pred.image }}.jpg" alt="{{ this.pred.name }} poster">
+        </div>
+        {{ else }}
+        <div class="poster">
+          <img class="pick-img" src="" alt="">
+        </div>
+        {{/if }}
+      </a>
+      {{#unless ../expired }}
+      <div data-cat="{{ this.id }}" id="cat{{ this.id }}" class="noms reveal large" data-reveal>
+        <h4>{{ this.category }}</h4>
+        {{#each this.noms }}
+        <div data-close class="small-nom {{#if this.pred }}picked{{/if}}" data-nom="{{ this.id }}">
+          <img src="/img/{{ this.image }}.jpg" title="{{ this.name }}{{#if this.film }} &#10;({{ this.film }}){{/if }}" alt="{{ this.name }} poster">
+        </div>
+        {{/each }}
+      </div>
+      {{/unless }}
     </div>
+    {{/each }}    
   </section>
-  {{/each}}
 
 </div>
-<script>
-$(document).ready(function() {
-
-  $('.small-nom').on('click', function() {
-    $(this).removeClass('imgfade').addClass('picked').siblings().removeClass('picked').addClass('imgfade');
-    var nom = $(this);
-
-    $.ajax({
-      type: 'POST',
-      url: '/prediction',
-      data: {
-        cat: $(this).parent().data('cat'),
-        user: $('#head').data('uid'),
-        nom: $(this).data('nom')
-      },
-      beforeSend: function() {
-
-      }
-    }).done(function(e) {
-      console.log(e);
-    }).fail(function(e) {
-      console.log(e);
-    })
-  })
-
-})
-</script>
 

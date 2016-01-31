@@ -1,39 +1,57 @@
-@import url(https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css);
+/*@import url(https://cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.css);*/
+@import url(vendor/foundation.min.css);
 
-.imgfade {
-  -webkit-filter: opacity(.33);
-  filter: opacity(.33);
+html {
+  font-size: 90%;
 }
 
-#pane {
-    position: relative;
-    display: block;
-    width:;
-  }
-
-span.title {
+section {
   display: block;
 }
 
+.noms {
+  z-index: 999;
+}
+
 .small-nom {
-  padding: 0px;
-  margin: 10px;
-  //float: left;
   display: inline-block;
-  height: 222px;
-  width: 150px;
-  border: 5px solid transparent;
-  -webkit-filter: opacity(.33);
-  filter: opacity(.33);
 }
 
-img {
-  height: 100%;
-  width: 100%;
+.pts {
+  float: right;
 }
 
-.picked {
-  border: 5px solid red;
-  -webkit-filter: opacity(1);
-  filter: opacity(1); 
+.category {
+  margin: 0.7em;
+  min-width: 172px; //214px; //13em;
+  vertical-align: top;
+  display: inline-block;
+  cursor: pointer;
 }
+
+
+.cat-head {
+  background-color: #333;
+  color: #e1e1e1;
+  font-weight: bold;
+  padding: 0.3em;
+}
+
+.poster {
+  border: 1px solid black;
+}
+
+.cat-foot {
+  background-color: #333;
+  color: #ddd;
+  font-weight: bold;
+  padding: 0.3em;
+}
+
+.pick-img, .small-nom > img {
+  width: 171px;
+  height: 254px;
+}
+
+.winner { font-weight: bold; }
+.winner::before { content: '*' };

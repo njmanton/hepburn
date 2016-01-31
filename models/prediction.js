@@ -1,4 +1,8 @@
-var db = require('../database');
+var db = require('../database'),
+    deadline = require('../config/config').deadline;
+
+var expired = (new Date() > deadline);
+
 
 // find all nominees and predictions for selected player
 exports.preds = function(uid, done) {
@@ -20,6 +24,7 @@ exports.preds = function(uid, done) {
             id: row.cid,
             category: row.category,
             weight: row.weight,
+            pred: {},
             noms: []
           }
         }
@@ -30,6 +35,14 @@ exports.preds = function(uid, done) {
           image: row.image,
           pred: row.pred
         })
+        if (row.pred == 1) {
+          data[row.cid - 1].pred = {
+            id: row.nid,
+            name: row.nominee,
+            film: row.film,
+            image: row.image
+          }
+        }
         pcid = row.cid;
       }
       done(data);
@@ -40,17 +53,17 @@ exports.preds = function(uid, done) {
 // save a prediction to db
 exports.save = function(body, done) {
 
-  if (body.cat && body.user && body.nom) {
+  if (body.cat && body.user && body.nom && !expired) {
     // first see if there's an existing row
     var sql = 'SELECT id FROM predictions WHERE user_id = ? AND category_id = ?';
     db.use().query(sql, [body.user, body.cat], function(err, rows) {
       if (rows && rows.length) { // row exists so update
         db.use().query('UPDATE predictions SET ? WHERE id = ?', [{ user_id: body.user, category_id: body.cat, nominee_id: body.nom }, rows[0].id], function(err, rows) {
-          done(rows.affectedRows.toString());
+          done((rows) ? rows.affectedRows.toString() : false);
         })
       } else { // row doesn't exist so insert
         db.use().query('INSERT INTO predictions SET ?', { user_id: body.user, category_id: body.cat, nominee_id: body.nom }, function(err, rows) {
-          done(rows.affectedRows.toString());
+          done((rows) ? rows.affectedRows.toString() : false);
         })
       }
     })
@@ -77,7 +90,7 @@ exports.category = function(cat, done) {
 // gets the winner of a category
 exports.getwinner = function(cat, done) {
 
-  db.use().query('SELECT C.name AS category, C.lastyear, N.id, N.name AS winner, N.film, N.image FROM categories C LEFT JOIN nominees N ON C.winner_id = N.id WHERE C.id = ?', cat, function(err, rows) {
+  db.use().query('SELECT C.id AS cid, C.name AS category, C.lastyear, N.id, N.name AS winner, N.film, N.image FROM categories C LEFT JOIN nominees N ON C.winner_id = N.id WHERE C.id = ?', cat, function(err, rows) {
     if (err) {
       done(err);
     } else {
@@ -99,14 +112,16 @@ exports.setwinner = function(data, done) {
           if (err) {
             result.err = err.code;
           } else {
-            result.update = rows;
+            result.update = rows.affectedRows;
           }
+          done(result);
         })
       } else {
         result.err = 'Not an admin';
+        done(result);
       }
     }
-    done(result);
+    
   })
 }
 
@@ -119,7 +134,31 @@ exports.results = function(done) {
       result.error = err;
     } else {
       result.data = rows;
+      // loop through rows, assigning a rank
+      var prev_score = 0, rank = 1, row = 0;
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].score == prev_score) {
+          row++;
+        } else {
+          rank = ++row;
+        }
+        prev_score = rows[i].score;
+        rows[i].rank = rank;
+      }
     }
     done(result);
   })
+}
+
+exports.getUsersByBet = function(cat, nom, done) {
+
+  var sql = 'SELECT U.username FROM nominees N INNER JOIN predictions P ON P.nominee_id = N.id INNER JOIN users U ON P.user_id = U.id WHERE P.category_id = ? AND N.id = ?';
+  db.use().query(sql, [cat, nom], function(err, rows) {
+    if (err) {
+      done(err);
+    } else {
+      done(rows);
+    }
+  })
+
 }
