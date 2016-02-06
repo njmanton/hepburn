@@ -1,8 +1,6 @@
-
+<h3 data-cat="{{ film.cid }}">{{ film.category }}</h3>
 <div class="row">
-
   <div class="small-12 medium-4 columns">
-    <h3 data-cat="{{ film.cid }}">{{ film.category }}</h3>
     {{#if film.winner }}
     <div style="max-height: 317px; max-width: 214px">
       <img src="/img/{{ film.image }}.jpg" alt="{{ film.winner }} Poster">
@@ -23,7 +21,7 @@
         {{#each table }}
         <tr>
           <td class="{{#if this.winner }}winner{{/if }}">{{ this.name }}</td>
-          <td width="500px"><div class="bar" data-win="{{ this.winner }}" data-len="{{ this.cnt }}" data-nid="{{ this.id }}"></div></td>
+          <td width="60%"><div class="bar" data-win="{{ this.winner }}" data-len="{{ this.cnt }}" data-nid="{{ this.id }}"></div></td>
           <td>{{ this.cnt }}</td>
         </tr>
         {{/each }}

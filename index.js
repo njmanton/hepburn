@@ -8,6 +8,7 @@ main entry point for app
 var express = require('express'),
     app = express(),
     db = require('./database'),
+    pkg = require('./package.json'),
     config = require('./config/config'),
     player = require('./models/player'),
     pred = require('./models/prediction'),
@@ -26,12 +27,13 @@ app.use(express.static('assets'));
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 
-// get the current datetime
-var expired = (new Date() > config.deadline);
+app.locals.env = config.env;
+app.locals.ver = pkg.version;
+app.locals.app = pkg.name;
 
 // main page
 app.get('/', function (req, res) {
-  res.render('main', { expired: expired, signups: config.placeholders() });
+  res.render('main', { expired: config.expired, signups: config.placeholders() });
 });
 
 app.get('/about', function(req, res) {
@@ -43,7 +45,7 @@ app.post('/signup', function(req, res) {
   player.create(req.body.username, req.body.email, function(check) {
     if (check.code) {
       mailer.send(req.body.username, req.body.email, check.code, function(result) {
-        console.log(result);
+        //console.log(result);
       })
     }
     res.render('main', { signup: check, signups: config.placeholders() });
@@ -53,7 +55,7 @@ app.post('/signup', function(req, res) {
 // get the results
 app.get('/results', function(req, res) {
   pred.results(function(data) {
-    res.render('results', { table: data, expired: expired });
+    res.render('results', { table: data, expired: config.expired });
   })
 })
 
@@ -65,10 +67,11 @@ app.get('/player/:code', function (req, res) {
         if (data.code) {
           res.render('main', { error: data.code, signups: config.placeholders() })
         } else {
-          res.render('players', { user: check, data: data, expired: expired });  
+          res.render('players', { user: check, data: data, expired: config.expired });  
         }
       })
     } else {
+      console.log(check);
       res.render('main', { error: check.err, signups: config.placeholders() })
     } 
   })

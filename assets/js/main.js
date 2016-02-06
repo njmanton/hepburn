@@ -60,7 +60,6 @@ $(document).ready(function() {
     
     var uname = $(this).val();
     if (uname.length > 2) {
-      $('#signup-submit').removeAttr('disabled');
       $.ajax({
         type: 'POST',
         url: '/player/check',
@@ -70,17 +69,24 @@ $(document).ready(function() {
         }
       }).done(function(res) {
         if (res === true) { // name is ok
-          $('#signup-submit').removeAttr('disabled');
-          $('#username-not-valid').removeClass('err').show().html('&#10003;');
+          $('#username-not-valid')
+            .removeClass('err')
+            .addClass('success')
+            .html('&#10003;')
+            .show();
         } else {
-          $('#signup-submit').attr('disabled', 'disabled');
-          $('#username-not-valid').addClass('err').show().text('taken');
+          $('#username-not-valid')
+            .addClass('err')
+            .removeClass('success')
+            .text('taken')
+            .show();
         }
+        checkForm();
       });
     } else {
       $('#username-not-valid').hide();
-      $('#signup-submit').attr('disabled', 'disabled');
     }
+    checkForm();
       
   })
 
@@ -96,28 +102,41 @@ $(document).ready(function() {
         data: { type: 2, value: email }
       }).done(function(res) {
         if (res === true) {
-          $('#signup-submit').removeAttr('disabled');
-          $('#email-not-valid').removeClass('err').show().html('&#10003;');
+          $('#email-not-valid')
+            .removeClass('err')
+            .addClass('success')
+            .html('&#10003;')
+            .show();
         } else {
-          $('#signup-submit').attr('disabled', 'disabled');
-          $('#email-not-valid').addClass('err').show().text('taken');
-        }          
+          $('#email-not-valid')
+            .addClass('err')
+            .removeClass('success')
+            .text('taken')
+            .show();
+        }   
+        checkForm();       
       });
     } else {
       env.show().removeClass('success').addClass('err').html('!');
-      $('#signup-submit').attr('disabled', 'disabled');        
     }
+    checkForm();
   })
 
+  function checkForm() {
+    var submit = $('#signup-submit');
+    var state = ($('#email-not-valid').hasClass('success') && ($('#username').val().length > 2) && $('#username-not-valid').hasClass('success'));
+    if (state) {
+      submit.removeAttr('disabled');
+    } else {
+      submit.attr('disabled', 'disabled');
+    }
+  }
+
   // players.hbs
-  $('.cat-head').on('click', function() {
-    //$(this).siblings('.noms').toggle();
-  })
 
   // set ticks on all category titles that have a selection
   $('.small-nom').on('click', function() {
     var _this = $(this);
-    _this.removeClass('imgfade').addClass('picked').siblings().removeClass('picked').addClass('imgfade');
     $.ajax({
       type: 'POST',
       url: '/prediction',
@@ -134,6 +153,7 @@ $(document).ready(function() {
         target.attr('src', _this.children('img').attr('src'));
         target.attr('alt', _this.children('img').attr('alt'));
         target.attr('title', _this.children('img').attr('title'));
+        _this.parent().parent().find('.cat-head').addClass('picked');
       }
     }).fail(function(e) {
       console.log('update prediction failed', e);

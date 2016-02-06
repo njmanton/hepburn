@@ -1,6 +1,6 @@
 {
   "name": "hepburn",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Oscar Prediction Game",
   "main": "index.js",
   "scripts": {

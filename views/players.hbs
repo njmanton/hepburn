@@ -1,8 +1,11 @@
-<div class="row">
+<div id="preds" class="medium-10 medium-centered columns">
   <h3>My Predictions</h3>
   {{#if expired }}
-  <div class="alert callout">
+  <div class="alert callout small" data-closable>
     <p>The deadline has now been reached. You can no longer edit your predictions. You can see the scores <a href="/results">here</a> as the award results come in.</p>
+    <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   {{ else }}
   <div>
@@ -16,7 +19,7 @@
     {{#each data }}
     <div class="category">
       <a data-open="cat{{ this.id }}">
-        <div class="cat-head">
+        <div class="cat-head {{#if this.pred.image }}picked{{/if}}">
           <span class="cat-name">{{ this.category }}</span>
           <span title="{{ this.weight }} points" class="pts">{{ this.weight }}</span>
         </div>
@@ -31,7 +34,7 @@
         {{/if }}
       </a>
       {{#unless ../expired }}
-      <div data-cat="{{ this.id }}" id="cat{{ this.id }}" class="noms reveal large" data-reveal>
+      <div data-cat="{{ this.id }}" id="cat{{ this.id }}" class="noms reveal large" data-reveal data-animation-in="hinge-in-from-top" data-animation-out="hinge-out-from-top">
         <h4>{{ this.category }}</h4>
         {{#each this.noms }}
         <div data-close class="small-nom {{#if this.pred }}picked{{/if}}" data-nom="{{ this.id }}">

@@ -1,40 +1,55 @@
-<div class="row">
+<div class="small-10 medium-centered columns">
   {{#if error }}
-  <p class="callout alert">Sorry, couldn't find that record. The error was: {{ error }}. Please check and try entering it again.</p>
+  <div class="callout small alert" data-closable>
+    <p>Sorry, couldn't find that record. The error was: {{ error }}. Please check and try entering it again.</p>
+    <button class="close-button" aria-label="dismiss alert" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   {{/if}}
 
   {{#if signup.error }}
-  <p class="callout alert">Something went wrong in registering your details. The error code was: {{ signup.error }}</p>
+  <div class="callout small alert" data-closable>
+    <p>Something went wrong in registering your details. The error code was: {{ signup.error }}</p>
+    <button class="close-button" aria-label="dismiss alert" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   {{/if}}
 
   {{#if signup.code }}
-  <p class="callout success">Signup successful. Your code is <strong>{{ signup.code }}</strong>. Use this to make your predictions at <a href="/player/{{ signup.code }}">http://oscars.mantonbradbury.com/player/{{ signup.code }}</a>. You will also receive a copy of the code by email.</p>
+  <div class="callout small success" data-closable>
+    <p>Signup successful. Your code is <strong>{{ signup.code }}</strong>. Use this to make your predictions at <a href="/player/{{ signup.code }}">http://oscars.mantonbradbury.com/player/{{ signup.code }}</a>. You will also receive a copy of the code by email.</p>
+    <button class="close-button" aria-label="dismiss alert" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   {{/if}}
 
   <h2>MY 20-YEAR OSCAR HELL PRESENTS&hellip;</h2>
   <p>The third annual prediction game for the Academy Awards. Choose who you think will win in each of the 24 main categories, to be announced at the 88th Academy Awards, on February 28.</p>
-
-  <p>Each award category is worth 2-4 points, depending on its 'popularity' and number of nominees. The maximum score you can achieve is 70. The player with the best score wins&hellip;nothing really. No money, no statuette, just the satisfaction of knowing you were the best guesser.</p>
-  {{#if expired}}
-  <p class="alert">The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
+  {{#if expired }}
+  <p class="callout alert">The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
   {{else}}
+  <p>Each award category is worth 2-4 points, depending on its 'popularity' and number of nominees. The maximum score you can achieve is 70. The player with the best score wins&hellip;nothing really. No money, no statuette, just the satisfaction of knowing you were the best guesser.</p>
+</div>
+<div id="signup" class="small-8 medium-6 small-centered columns">
   <h3>Signup</h3>
-  <div>
-    <p>Enter a username and email to get started. The deadline for entering or changing predictions is <strong>midnight GMT on Feb 28</strong>.</p>
-  </div>
-  <form id="signup" method="post" action="/signup">
+  <p>Enter a username and email to get started. The deadline for entering or changing predictions is <strong>midnight GMT on Feb 28</strong>.</p>
+  <form method="post" action="/signup">
     <div class="signup-container">
-      <label for="username">What's your name? <small>This is how you'll appear on the leaderboard</small>
-        <input placeholder="{{ signups.uid }}" id="username" name="username" type="textbox" autofocus="true" maxlength="50">
-        <span id="username-not-valid" class="intrainput"></span>
-      </label>
+      <label for="username">What's your name? <span class="sub-label">(3-25 chars) This is how you'll appear on the leaderboard</span></label>
+      <input autocomplete="off" placeholder="e.g. {{ signups.uid }}" id="username" name="username" type="text" autofocus="true" maxlength="50">
+      <span id="username-not-valid" class="intrainput"></span>
     </div>
     <div class="signup-container">
-      <label for="email">What's your email? <small>You'll only get two emails in total, confirmation of signup and the final rankings</small></label>
-      <input placeholder="{{ signups.email }}" id="email" name="email" type="email">
+      <label for="email">What's your email? <span class="sub-label">You'll only get two emails in total, confirmation of signup and the final rankings</span></label>
+      <input autocomplete="off" placeholder="e.g. {{ signups.email }}" id="email" name="email" type="email">
       <span id="email-not-valid" class="intrainput"></span>
     </div>
     <input id="signup-submit" type="submit" class="button" value="Sign up" />
   </form>
-  {{/if}}
 </div>
+{{/if}}
+<div class="small-10 columns"></div>
+

@@ -4,7 +4,7 @@ var db = require('../database');
 exports.exists = function(code, done) {
 
   if (!code || code.length != 8) {
-    done(false);
+    done({err: 'Invalid code'});
   } else {
     var sql = 'SELECT id, username FROM users WHERE code = ? LIMIT 1';
     var user = {};
