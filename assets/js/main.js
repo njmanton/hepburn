@@ -135,8 +135,13 @@ $(document).ready(function() {
   // players.hbs
 
   // set ticks on all category titles that have a selection
-  $('.small-nom').on('click', function() {
-    var _this = $(this);
+  $('.rev-nom').on('click', function() {
+    var _this = $(this),
+        img   = _this.find('img'),
+        imgs  = _this.parent().find('img');
+    imgs.removeClass('picked');
+    img.addClass('picked');
+
     $.ajax({
       type: 'POST',
       url: '/prediction',
@@ -148,12 +153,9 @@ $(document).ready(function() {
     }).done(function(e) {
       if (e) {
         // the prediction has been saved so change the outer poster image to match the pick
-        // and either highlight the pick in the modal, or auto-close the modal
-        var target = _this.parent().parent().find('.pick-img');
-        target.attr('src', _this.children('img').attr('src'));
-        target.attr('alt', _this.children('img').attr('alt'));
-        target.attr('title', _this.children('img').attr('title'));
-        _this.parent().parent().find('.cat-head').addClass('picked');
+        var target = _this.parent().parent().find('.poster > img');
+        target.replaceWith(_this.children('img').clone());
+        target.removeClass('picked');
       }
     }).fail(function(e) {
       console.log('update prediction failed', e);

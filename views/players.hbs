@@ -35,10 +35,11 @@
       </a>
       {{#unless ../expired }}
       <div data-cat="{{ this.id }}" id="cat{{ this.id }}" class="noms reveal large" data-reveal data-animation-in="hinge-in-from-top" data-animation-out="hinge-out-from-top">
-        <h4>{{ this.category }}</h4>
+        <h4>{{ this.category }} - {{ this.weight }} points</h4>
         {{#each this.noms }}
-        <div data-close class="small-nom {{#if this.pred }}picked{{/if}}" data-nom="{{ this.id }}">
-          <img src="/img/{{ this.image }}.jpg" title="{{ this.name }}{{#if this.film }} &#10;({{ this.film }}){{/if }}" alt="{{ this.name }} poster">
+        <div data-close class="rev-nom" data-nom="{{ this.id }}">
+          <img class="{{#if this.pred }}picked{{/if}}" src="/img/{{ this.image }}.jpg" title="{{ this.name }}{{#if this.film }} &#10;({{ this.film }}){{/if }}" alt="{{ this.name }} poster">
+          <div class="rev-title">{{ this.name }}</div>
         </div>
         {{/each }}
       </div>
