@@ -30,10 +30,11 @@ app.use(bp.json());
 app.locals.env = config.env;
 app.locals.ver = pkg.version;
 app.locals.app = pkg.name;
+app.locals.expired = config.expired;
 
 // main page
 app.get('/', function (req, res) {
-  res.render('main', { expired: config.expired, signups: config.placeholders() });
+  res.render('main', { signups: config.placeholders() });
 });
 
 app.get('/about', function(req, res) {
@@ -55,7 +56,7 @@ app.post('/signup', function(req, res) {
 // get the results
 app.get('/results', function(req, res) {
   pred.results(function(data) {
-    res.render('results', { table: data, expired: config.expired });
+    res.render('results', { table: data });
   })
 })
 
@@ -67,11 +68,10 @@ app.get('/player/:code', function (req, res) {
         if (data.code) {
           res.render('main', { error: data.code, signups: config.placeholders() })
         } else {
-          res.render('players', { user: check, data: data, expired: config.expired });  
+          res.render('players', { user: check, data: data });  
         }
       })
     } else {
-      console.log(check);
       res.render('main', { error: check.err, signups: config.placeholders() })
     } 
   })
@@ -113,16 +113,6 @@ app.get('/prediction/userbycat/:cat/:nom', function(req, res) {
   pred.getUsersByBet(req.params.cat, req.params.nom, function(list) {
     res.send(list);
   })
-})
-
-app.get('/test/email', function(req, res) {
-  mailer.send('Nick', null, 'ARUDMVDQ', function(body) {
-    if (body) {
-      res.send(body);
-    } else {
-      res.send('Error');
-    }
-  });
 })
 
 // start the server
