@@ -1,28 +1,33 @@
-<div>
+<div class="small-12 columns">
   <h3>Leaderboard</h3>
-  {{#if table.error }}
-  <p>Error in retrieving results :-(</p>
-  {{else}}
-  <table id="results">
-    <thead>
-      <tr>
-        <th>Position</th>
-        <th>Player</th>
-        <th>Score</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each table.data }}
-      <tr>
-        <td>{{ rank }}</td>
-        <td>{{ player }}</td>
-        <td width="500px">
-          <div class="bar" data-len="{{ score }}">{{ score }}</div>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-  {{/if}}
+  {{#unless expired }}
+    <p>The leaderboard will appear here once the deadline for making predictions has been reached.</p>
+  {{ else }}
+    {{#if table.error }}
+    <p>Error in retrieving results :-(</p>
+    {{else}}
+    <table id="results">
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Player</th>
+          <th colspan="2">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each table.data }}
+        <tr>
+          <td class="{{#if @first }}winner{{/if }}">{{ rank }}</td>
+          <td class="{{#if @first }}winner{{/if }}">{{ player }}</td>
+          <td width="500px">
+            <div class="bar" data-len="{{ score }}"></div>
+          </td>
+          <td>{{ score }}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{/if }}
+  {{/unless }}
   
 </div>
