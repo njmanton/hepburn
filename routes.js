@@ -66,11 +66,16 @@ module.exports = function(app) {
 
   // render a view of a category, with predictions
   app.get('/category/:cat', function(req, res) {
-    pred.getwinner(req.params.cat, function(film) {
-      pred.category(req.params.cat, function(cat) {
-        res.render('category', {film: film[0], table: cat});
-      })
-    })
+    if (req.params.cat > 0 && req.params.cat < 25) {
+      pred.getwinner(req.params.cat, function(film) {
+        pred.category(req.params.cat, function(cat) {
+          res.render('category', {film: film[0], table: cat});
+        })
+      }) 
+    } else {
+      res.send('Invalid category');
+    }
+
   })
 
   // check the uniqueness of a signups name and email
