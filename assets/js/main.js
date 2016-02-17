@@ -7,7 +7,7 @@ $(document).ready(function() {
   $('#category .bar').each(function(i) {
     var _this = $(this);
     var len = _this.data('len');
-    var col = (_this.data('win')) ? 'green' : 'red';
+    var col = (_this.data('win')) ? 'win' : '';
     if (!i) {
       width = 100;
       max_count = len;
@@ -15,11 +15,11 @@ $(document).ready(function() {
       width = len/max_count * 100; 
     }
     _this
-      .css('background-color', col)
+      .addClass(col)
       .animate({
         width: width + '%'
       }, 900);
-  }).on('mouseover', function(e) {
+  }).on('mouseover touchhold', function(e) {
     var _this = $(this);
     $.ajax({
       type: 'GET',
@@ -30,6 +30,7 @@ $(document).ready(function() {
         label = label + res[i].username + '\n';
       }
       _this.attr('title', label);
+
     })
   })
 
@@ -134,7 +135,6 @@ $(document).ready(function() {
 
   // players.hbs
 
-  // set ticks on all category titles that have a selection
   $('.rev-nom').on('click', function() {
     var _this = $(this),
         img   = _this.find('img'),
@@ -153,13 +153,20 @@ $(document).ready(function() {
     }).done(function(e) {
       if (e) {
         // the prediction has been saved so change the outer poster image to match the pick
-        var target = _this.parent().parent().find('.poster > img');
+        var target = _this.parent().parent().find('.poster > img'),
+            head = _this.parent().parent().find('.cat-head');
         target.replaceWith(_this.children('img').clone());
         target.removeClass('picked');
+        head.addClass('picked');
       }
     }).fail(function(e) {
       console.log('update prediction failed', e);
     })
+  })
+
+  $('#category_list').on('change', function() {
+    var idx = $('#category_list :selected').val() * 1;
+    window.location.href = '/category/' + idx;
   })
 
 })
