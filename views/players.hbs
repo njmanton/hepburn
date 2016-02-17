@@ -1,5 +1,5 @@
-<div id="preds" class="medium-10 medium-centered columns">
-  <h3>My Predictions</h3>
+<div id="preds" class="medium-12 medium-centered columns">
+  <h3>Predictions for {{ user.name }}</h3>
   {{#if expired }}
   <div class="alert callout small" data-closable>
     <p>The deadline has now been reached. You can no longer edit your predictions. You can see the scores <a href="/results">here</a> as the award results come in.</p>
@@ -9,11 +9,11 @@
   </div>
   {{ else }}
   <div>
-    <p>Click on a category to make or edit your prediction for that category. The number in the title bar shows the number of points each category is worth.</p>
+    <p>Click on a category to make or edit your prediction for that category. Your prediction will be automatically saved. The number in the title bar shows the number of points each category is worth.</p>
   </div>
   {{/if }}
   
-  <div id="head" data-uid="{{ user.id }}">{{ user.name }}</div>
+  <div id="head" data-uid="{{ user.id }}"></div>
   
   <section class="row titles">
     {{#each data }}
@@ -35,7 +35,7 @@
       </a>
       {{#unless ../expired }}
       <div data-cat="{{ this.id }}" id="cat{{ this.id }}" class="noms reveal large" data-reveal data-animation-in="hinge-in-from-top" data-animation-out="hinge-out-from-top">
-        <h4>{{ this.category }} - {{ this.weight }} points</h4>
+        <h4>Best {{ this.category }} - {{ this.weight }} points</h4>
         {{#each this.noms }}
         <div data-close class="rev-nom" data-nom="{{ this.id }}">
           <img class="{{#if this.pred }}picked{{/if}}" src="/img/{{ this.image }}.jpg" title="{{ this.name }}{{#if this.film }} &#10;({{ this.film }}){{/if }}" alt="{{ this.name }} poster">
