@@ -101,7 +101,7 @@ exports.getwinner = function(cat, done) {
 }
 
 exports.setwinner = function(data, done) {
-  var result = { err: null, update: false };
+  var result = { err: null, update: false};
   var sql = 'SELECT admin FROM users WHERE code = ? LIMIT 1';
   db.use().query(sql, data.code, function(err, rows) {
     if (err) {
@@ -113,8 +113,13 @@ exports.setwinner = function(data, done) {
             result.err = err.code;
           } else {
             result.update = rows.affectedRows;
+            db.use().query('SELECT C.name AS cat, N.name AS winner FROM categories C JOIN nominees N ON C.winner_id = N.id WHERE C.winner_id = ? AND C.id = ?', [data.winner, data.cat], function(err, rows) {
+              //console.log(rows);
+              //SSE send here
+              done(rows);
+            })
           }
-          done(result);
+          //done(result);
         })
       } else {
         result.err = 'Not an admin';
