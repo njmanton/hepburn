@@ -29,6 +29,7 @@ app.locals.ver = pkg.version;
 app.locals.app = pkg.name;
 app.locals.expired = config.expired;
 
+// pull in the different routes
 require('./routes')(app);
 
 // start the server
