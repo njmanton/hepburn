@@ -1,8 +1,5 @@
 var db = require('../database'),
-    deadline = require('../config/config').deadline;
-
-var expired = (new Date() > deadline);
-
+    config = require('../config/config');
 
 // find all nominees and predictions for selected player
 exports.preds = function(uid, done) {
@@ -53,7 +50,7 @@ exports.preds = function(uid, done) {
 // save a prediction to db
 exports.save = function(body, done) {
 
-  if (body.cat && body.user && body.nom && !expired) {
+  if (body.cat && body.user && body.nom && !config.expired) {
     // first see if there's an existing row
     var sql = 'SELECT id FROM predictions WHERE user_id = ? AND category_id = ?';
     db.use().query(sql, [body.user, body.cat], function(err, rows) {
