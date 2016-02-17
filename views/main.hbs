@@ -10,9 +10,9 @@
   <div id="signup">
     <h4>Sign up</h4>
     {{#if expired }}
-    <p class="callout alert">The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
+    <p class="callout alert" style="border-radius: 4px">The deadline for predictions has now expired. See the <a href="/results">results</a> page to see how you did.</p>
     {{else}}
-    <p>Enter a username and email to get started. The deadline for entering or changing predictions is <strong>midnight GMT on Feb 28</strong>.</p>
+    <p>Enter a username and email to get started. The deadline for entering or changing predictions is <strong>midday GMT on Feb 28</strong>.</p>
     <form method="post" action="/signup">
       <div class="signup-container">
         <label for="username">What's your name? <span class="sub-label">(3-25 chars) This is how you'll appear on the leaderboard</span></label>
