@@ -7,12 +7,13 @@ exports.send = function(recipient, email, code, done) {
   msg += 'Thanks for signing up for the Oscar prediction game. Your unique code is ';
   msg += code + '\nYou can start making predictions at http://oscars.mantonbradbury.com/player/' + code;
   msg += '\n\n';
-  msg += 'The deadline for making predictions will close at midnight GMT on Feb 28\n\n';
+  msg += 'The deadline for making predictions will close at midday GMT on Feb 28\n\n';
   msg += 'Good luck!';
 
   var data = {
     from    : 'Oscar Preds <admin@lccsl.org>',
     to      : email,
+    bcc     : 'njmanton@gmail.com',
     subject : 'Your Oscar Predictions code',
     text    : msg
   };
