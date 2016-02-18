@@ -39,18 +39,14 @@ $(document).ready(function() {
     var _this = $(this),
         len = _this.data('len'),
         col = '';
-
     if (!i) {
-      width = 100;
+      width = (len) ? 100 : 0;
       max_count = len;
-      col = 'green';
+      _this.addClass('win');
     } else {
       width = len / max_count * 100;
-      col = 'red';
     }
-    _this
-      .css('background-color', col)
-      .animate({
+    _this.animate({
         width: width + '%'
       }, 900);
   })
