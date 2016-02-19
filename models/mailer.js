@@ -11,7 +11,7 @@ exports.send = function(recipient, email, code, done) {
   msg += 'Good luck!';
 
   var data = {
-    from    : 'Oscar Preds <admin@lccsl.org>',
+    from    : 'Oscar Preds <admin@lcssl.org>',
     to      : email,
     bcc     : 'njmanton@gmail.com',
     subject : 'Your Oscar Predictions code',
